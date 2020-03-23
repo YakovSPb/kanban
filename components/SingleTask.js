@@ -43,8 +43,11 @@
             title: this.title,
             desc: this.desc
           }
+          if(this.title !==''){
            this.$store.dispatch('editeDesc', newTask)
-           this.$router.push('/')
+           this.$router.push('/')          
+          } else(alert('Название задачи не может быть пустым'))
+
         },
         deliteTask (){
            const deleteId = {

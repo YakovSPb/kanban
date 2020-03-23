@@ -92,9 +92,12 @@ var Board = {
              title: this.value,
              desc: ''
            }
-           this.$store.dispatch('createTask', task)
-           localStorage.setItem('tasks', JSON.stringify(this.$store.state.tasks))
-           this.value = ''
+           if(task.title !== ''){
+             this.$store.dispatch('createTask', task)
+             localStorage.setItem('tasks', JSON.stringify(this.$store.state.tasks))
+             this.value = ''
+           } else(alert('Название задачи не может быть пустым'))
+
         }
       }
     }
