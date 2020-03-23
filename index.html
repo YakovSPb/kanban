@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Kanban</title>
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div id="app">
+    <main class="flexbox">
+
+      <Board title="В работе" id="board-1">
+        <Card v-for="task in filterWork" :id="'card-'+task.id" draggable="true">
+        <router-link class="task__link" :to="`/task/${task.id}`">
+          {{task.title | textOverflow}}
+        </router-link>
+        </Card>
+      </Board>
+
+      <Board title="На проверке" id="board-2">
+        <Card v-for="task in filterTest" :id="'card-'+task.id" draggable="true">
+        <router-link class="task__link" :to="`/task/${task.id}`">
+          {{task.title | textOverflow}}
+        </router-link>
+        </Card>
+      </Board>
+
+      <Board title="Выполнено" id="board-3">
+        <Card v-for="task in filterDone" :id="'card-'+task.id" draggable="true">
+        <router-link class="task__link" :to="`/task/${task.id}`">
+         {{task.title | textOverflow}}
+        </router-link>
+        </Card>
+      </Board>
+      <router-view></router-view>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  <script src="https://unpkg.com/vuex "></script>
+  <script src="store.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="components/Board.js"></script>
+  <script src="components/Card.js"></script>
+  <script src="components/SingleTask.js"></script>
+
+  <script>
+
+    var router = new VueRouter({
+      mode: 'history',
+      routes: [
+        {path: '/', component: Board},
+        {path: '/task/:id', component: SingleTask}
+      ]
+    })
+
+
+
+    var app = new Vue({
+     el: '#app',
+      store,
+      router: router,
+      data() {
+        return {
+       }
+      },
+       props: ['title','id','isActive'],
+      components: {
+        'Board': Board,
+        'Card': Card,
+        'SingleTask': SingleTask
+      },
+      methods:{
+        drop: function(e){
+
+        }
+      },
+      computed:{
+        tasks () {
+          return this.$store.state.tasks
+        },
+        filterWork(){
+          return this.tasks.filter(e=> e.category == 'work')
+        },
+        filterTest(){
+          return this.tasks.filter(e=> e.category == 'test')
+        },
+        filterDone(){
+          return this.tasks.filter(e=> e.category == 'done')
+        }
+      },
+      filters:{
+        textOverflow (text){
+          let sliced = text.slice(0,60)
+          if(text.length > 60){
+            sliced = sliced + '...'
+          }
+          return sliced
+        }
+      }
+    })
+  </script>
+</body>
+</html>
