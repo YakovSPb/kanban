@@ -47,7 +47,10 @@ var Board = {
       methods: {
         drop: function(e) {
           const card_id = e.dataTransfer.getData('card_id')
-          let indexBoard = e.explicitOriginalTarget.id.split("board-")[1] | null
+          let indexBoard = null
+    
+          indexBoard = e.target.id.split("board-")[1]
+ 
           const idNum = card_id.split("card-")
           const indexCard = idNum[1]
           const elCard = document.getElementById(card_id)
